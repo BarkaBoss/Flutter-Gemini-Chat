@@ -88,3 +88,6 @@ final _scrollController = ScrollController();`
     );
     _chatSession = _gemini.startChat();
 }`
+
+### We are getting there
+
