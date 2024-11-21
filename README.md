@@ -91,3 +91,58 @@ final _scrollController = ScrollController();`
 
 ### We are getting there
 
+
+`Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('DevFest 2024 GDG Abuja'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _chatSession.history.length,
+                itemBuilder: (context, index) {
+                  final Content content = _chatSession.history.toList()[index];
+                  final textMessage = content.parts
+                      .whereType<TextPart>()
+                      .map((e) => e.text)
+                      .join('');
+                  return MessageWidget(
+                    textMessage: textMessage,
+                    isFromUser: content.role == 'user',
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 10,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      autofocus: true,
+                      focusNode: _messageFocusNode,
+                      controller: _messageController,
+                      onSubmitted: _sendMessage,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }`
