@@ -75,8 +75,12 @@ final _messageFocusNode = FocusNode();
 final _scrollController = ScrollController();`
 
 ## Override initState
+> We first initialize the Gemini model by selecting the model we want **gemini-pro**
+> Next, we set our API key
+> Lastly we initialize our chat session to start the chat session
 
-`void initState() {
+` @override
+  void initState() {
     super.initState();
         _gemini = GenerativeModel(
         model: 'gemini-pro',
