@@ -158,3 +158,125 @@ return Scaffold(
 ### Slow down that is a whole lot of copy and pasting
 ![img_1.png](img_1.png)
 
+The key things to take note of are:
+1. We have a Column widget which has a ListView widget that lists out our chat message
+2. We return our custom widget **MessageWidget** which we will build at the end
+3. Next is the TextField widget which receives user input
+4. The TextField widget has a submit method **_sendMessage** which queries Gemini and returns its response
+
+## Send our messages
+Add these methods to your project
+1. The _sendMessage method sends our message using our instance of _chatSession
+2. We handle Exceptions and display a snackbar if Gemini does not give any response
+3. If our query is successful, we display the response to the users move the focus to the new entry by calling the **_scrollToNewText** method 
+```
+Future<void> _sendMessage(String message) async {
+
+    try {
+      final response = await _chatSession.sendMessage(
+        Content.text(message),
+      );
+      final textMessage = response.text;
+
+      if (textMessage == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              'No response from Gemini',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+        return;
+      } else {
+        setState(() {
+          _scrollToNewText();
+        });
+      }
+    } catch (ex) {
+      debugPrint('EXCEPTION CAUGHT $ex');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            'Exception thrown check logs',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
+    } finally {
+      _messageController.clear();
+      _messageFocusNode.requestFocus();
+    }
+  }
+
+  void _scrollToNewText() {
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+            duration: const Duration(
+              milliseconds: 500,
+            ),
+            curve: Curves.easeOutCirc));
+  }
+```
+## Look at you go...
+![img_2.png](img_2.png)
+
+## Adding our MessageWidget
+1. create a new folder with the **lib** folder called **widgets**
+2. create a dart file **message.dart**
+3. paste the following StatelessWidget in **message.dart**
+
+The following widget is our message bubble that:
+1. Has a textMessage attribute for messages set by the user or received from Gemini
+2. A boolean isFromUser to differentiate messages from Users and from Gemini
+3. We then set the color of the bubble to Green for User messages and Blue Gemini responses
+```
+class MessageWidget extends StatelessWidget {
+  const MessageWidget(
+      {super.key, required this.textMessage, required this.isFromUser});
+
+  final String textMessage;
+  final bool isFromUser;
+
+  @override
+  Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    return Row(
+      mainAxisAlignment:
+          isFromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        Flexible(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            constraints: BoxConstraints(maxWidth: deviceWidth * 0.9),
+            decoration: BoxDecoration(
+                color: isFromUser
+                    ? const Color(0x781AFF28)
+                    : const Color(0x780199F8),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              children: [
+                MarkdownBody(data: textMessage),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 10,),
+      ],
+    );
+  }
+}
+```
+### Running your project
+Run the application using
+```
+flutter run --dart-define-from-file=env.json
+```
+![Screenshot_1732260301.png](Screenshot_1732260301.png)
+
+## Have some cake
+Show your friends your new Gemini powered AI chatbot
+Tweet an image or screenshot with **#DevFestAbuja** and **#DevFestAbuja2024**
