@@ -275,8 +275,8 @@ Run the application using
 ```
 flutter run --dart-define-from-file=env.json
 ```
-![Screenshot_1732260301.png](Screenshot_1732260301.png)
-
+![Screenshot_1732260909.png](Screenshot_1732260909.png)
 ## Have some cake
 Show your friends your new Gemini powered AI chatbot
 Tweet an image or screenshot with **#DevFestAbuja** and **#DevFestAbuja2024**
+![img_3.png](img_3.png)
