@@ -11,9 +11,11 @@ A new Flutter project.
 >create **env.json** file in the root directory of your newly created project
 > Add the following code to the env.json file. Replace **your_api_key** with the key from **Google AI studio**
 
-`{
+```
+{
 "api_key" :  "your_api_key"
-}`
+}
+```
 
 ## Install required packages
 **flutter pub add google_generative_ai flutter_markdown**
@@ -24,9 +26,11 @@ A new Flutter project.
 ## Get your fingers dirty
 change your code in **main.dart** to the following
 
-`void main() {
+```
+void main() {
     runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
     const MyApp({super.key});
@@ -41,7 +45,8 @@ class MyApp extends StatelessWidget {
         home: const Home(),
         );
     }
-}`
+}
+```
 
 ## Creating our Gemini chat page
 >create a folder **screens**
@@ -50,7 +55,8 @@ class MyApp extends StatelessWidget {
 
 ## Add the following code to the file
 
-`class Home extends StatefulWidget {
+```
+class Home extends StatefulWidget {
     const Home({super.key});
 
 @override
@@ -62,7 +68,8 @@ class _HomeState extends State<Home> {
     Widget build(BuildContext context) {
         return const Placeholder();
     }
-}`
+}
+```
 
 ## Declare necessary variables
 >GenerativeModel is the an instance of the Gemini Model which helps to query the Gemini AI
@@ -79,7 +86,8 @@ final _scrollController = ScrollController();`
 > Next, we set our API key
 > Lastly we initialize our chat session to start the chat session
 
-` @override
+```
+ @override
   void initState() {
     super.initState();
         _gemini = GenerativeModel(
@@ -87,10 +95,11 @@ final _scrollController = ScrollController();`
         apiKey: const String.fromEnvironment('api_key'),
     );
     _chatSession = _gemini.startChat();
-}`
+}
+```
 
 ### We are getting there
-Replace the contents
+Replace the contents of the build method with the following block of code
 
 ```
 return Scaffold(
@@ -145,4 +154,7 @@ return Scaffold(
         ),
       ),
     );
-    ```
+```
+### Slow down that is a whole lot of copy and pasting
+![img_1.png](img_1.png)
+
